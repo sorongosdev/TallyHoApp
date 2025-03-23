@@ -1,6 +1,12 @@
 // bloc/grid_bloc.dart
 import 'package:flutter/material.dart';
 
+enum GameMode {
+  flip,
+  hunt,
+  escape,
+}
+
 class GridBloc extends ChangeNotifier {
   // 원본 코드와 일치하도록 49개 고정 아이템
   final int _itemCount = 49;
@@ -13,9 +19,14 @@ class GridBloc extends ChangeNotifier {
   final int _columns = 7;
   int get columns => _columns;
 
-  // 선택된 아이템 인덱스 (선택 기능을 위한 예시)
+  // 선택된 아이템 인덱스
   int? _selectedIndex;
   int? get selectedIndex => _selectedIndex;
+
+  // 현재 게임 모드를 저장하는 변수
+  // ignore: prefer_final_fields
+  GameMode _currentMode = GameMode.hunt; // 기본 모드는 뒤집기로 설정
+  GameMode get currentMode => _currentMode;
 
   // 아이템 선택 메서드
   void selectItem(int index) {

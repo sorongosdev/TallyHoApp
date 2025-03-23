@@ -72,9 +72,7 @@ class GridScreen extends StatelessWidget {
                       height: gridHeight,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(
-                            gridBloc.getCardImage(gridBloc.selectedIndex ?? -1),
-                          ),
+                          image: AssetImage('assets/images/board.png'),
                           fit: BoxFit.cover,
                         ),
                       ),

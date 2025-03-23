@@ -41,6 +41,8 @@ class GridBloc extends ChangeNotifier {
 
   // 아이템의 텍스트 가져오기 (원본 코드와 동일)
   String getItemText(int index) {
-    return 'Item $index';
+    final row = (index ~/ _columns);
+    final column = (index % _columns);
+    return '(R$row, C$column)';
   }
 }

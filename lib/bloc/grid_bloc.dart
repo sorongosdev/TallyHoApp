@@ -1,6 +1,7 @@
 // bloc/grid_bloc.dart
 import 'package:flutter/material.dart';
 import '../enum/game_modes.dart';
+import '../enum/player_types.dart';
 
 class GridBloc extends ChangeNotifier {
   // 원본 코드와 일치하도록 49개 고정 아이템
@@ -22,6 +23,10 @@ class GridBloc extends ChangeNotifier {
   // ignore: prefer_final_fields
   GameMode _currentMode = GameMode.flip; // 기본 모드는 뒤집기
   GameMode get currentMode => _currentMode;
+
+  // ignore: prefer_final_fields
+  PlayerType _currentType = PlayerType.human; // 일단 사람으로 세팅
+  PlayerType get currentType => _currentType;
 
   // 아이템 선택 메서드
   void selectItem(int index) {

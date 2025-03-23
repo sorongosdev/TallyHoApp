@@ -1,0 +1,4 @@
+enum PlayerType {
+  human,
+  animal,
+}

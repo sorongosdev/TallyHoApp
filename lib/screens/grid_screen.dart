@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../bloc/grid_bloc.dart';
 import '../widgets/grid_view_widget.dart';
 import '../enum/game_modes.dart';
+import '../enum/player_types.dart';
 
 class GridScreen extends StatelessWidget {
   const GridScreen({super.key});
@@ -19,6 +20,17 @@ class GridScreen extends StatelessWidget {
         return '탈출';
     }
   }
+
+  // 팀
+  String _getPlayerTypeDisplayName(PlayerType playerType) {
+    switch (playerType) {
+      case PlayerType.animal:
+        return '동물';
+      case PlayerType.human:
+        return '인간';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,28 +73,53 @@ class GridScreen extends StatelessWidget {
                       height: gridHeight,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/board.png'), 
+                          image: AssetImage('assets/images/board.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                       child: GridViewWidget(cellSize: cellSize),
                     ),
                   ),
+                  Column(
+                    children: [
+                      SizedBox(height: 50),
 
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      color: Colors.yellow,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        _getModeDisplayName(gridBloc.currentMode),
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.end, // Row를 사용해 오른쪽 정렬
+                        children: [
+                          Container(
+                            color: Colors.yellow,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${_getModeDisplayName(gridBloc.currentMode)} 모드',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.end, // Row를 사용해 오른쪽 정렬
+                        children: [
+                          Container(
+                            color: Colors.yellow,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '당신은 ${_getPlayerTypeDisplayName(gridBloc.currentType)}팀입니다.',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
 
                   Positioned(

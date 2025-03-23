@@ -78,6 +78,24 @@ class GridScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('뒤집기'),
+                        ),
+                        const SizedBox(width: 8), // 버튼 사이 간격 추가
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('턴 넘기기'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               );
             },

@@ -43,6 +43,6 @@ class GridBloc extends ChangeNotifier {
   String getItemText(int index) {
     final row = (index ~/ _columns);
     final column = (index % _columns);
-    return '(R$row, C$column)';
+    return 'R${row}C${column}';
   }
 }

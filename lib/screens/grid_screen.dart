@@ -73,7 +73,7 @@ class GridScreen extends StatelessWidget {
                       height: gridHeight,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/board.png'),
+                          image: AssetImage(gridBloc.getCardImage(gridBloc.selectedIndex ?? - 1)),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -128,7 +128,9 @@ class GridScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            gridBloc.flipCard();
+                          },
                           child: const Text('뒤집기'),
                         ),
                         const SizedBox(width: 8),

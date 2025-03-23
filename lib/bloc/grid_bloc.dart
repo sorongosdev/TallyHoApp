@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../enum/game_modes.dart';
 import '../enum/player_types.dart';
+import '../enum/card_types.dart';
 
 class GridBloc extends ChangeNotifier {
   // 원본 코드와 일치하도록 49개 고정 아이템
@@ -28,6 +29,45 @@ class GridBloc extends ChangeNotifier {
   PlayerType _currentType = PlayerType.human; // 일단 사람으로 세팅
   PlayerType get currentType => _currentType;
 
+  // ignore: prefer_final_fields
+  CardType _currentCardType = CardType.hidden;
+  CardType get currentCardType => _currentCardType;
+
+  String getCardImage(int index) {
+    if (_selectedIndex != index) {
+      return 'assets/images/card_back.png';
+    }
+
+    // 선택된 카드면 현재 카드 타입에 따라 이미지 반환
+    switch (_currentCardType) {
+      case CardType.hunter:
+        return 'assets/images/hunter.png';
+      case CardType.bear:
+        return 'assets/images/bear.png';
+      case CardType.duck:
+        return 'assets/images/duck.png';
+      case CardType.fox:
+        return 'assets/images/fox.png';
+      case CardType.goose:
+        return 'assets/images/goose.png';
+      case CardType.woodcutter:
+        return 'assets/images/woodcutter.png';
+      case CardType.fatTree:
+        return 'assets/images/fat_tree.png';
+      case CardType.skinnyTree:
+        return 'assets/images/skinny_tree.png';
+      case CardType.hidden:
+        return 'assets/images/card_back.png';
+    }
+  }
+
+  void flipCard() {
+    if (_selectedIndex != null) {
+      _currentCardType = CardType.hunter; // 또는 원하는 다른 타입
+      notifyListeners();
+    }
+  }
+
   // 아이템 선택 메서드
   void selectItem(int index) {
     if (_selectedIndex == index) {
@@ -43,6 +83,6 @@ class GridBloc extends ChangeNotifier {
   String getItemText(int index) {
     final row = (index ~/ _columns);
     final column = (index % _columns);
-    return 'R${row}C${column}';
+    return 'R${row}C$column';
   }
 }

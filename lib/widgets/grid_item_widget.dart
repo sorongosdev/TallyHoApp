@@ -23,13 +23,13 @@ class GridItemWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/card_back.png'),
+                image: AssetImage(gridBloc.getCardImage(index)),
                 fit: BoxFit.cover,
               ),
               border: Border.all(color: Colors.black, width: 1.0),
             ),
           ),
-          
+
           // 선택 효과 레이어 (선택된 경우에만 보임)
           if (isSelected)
             Container(
@@ -37,7 +37,7 @@ class GridItemWidget extends StatelessWidget {
                 color: const Color.fromARGB(150, 136, 174, 191), // 투명도 추가
               ),
             ),
-          
+
           // 텍스트 레이어
           Center(
             child: Text(

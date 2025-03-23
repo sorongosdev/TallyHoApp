@@ -23,7 +23,7 @@ class GridItemWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black, width: 1.0),
-          color: isSelected ? Colors.lightBlue[100] : Colors.white,
+          color: isSelected ? const Color.fromARGB(255, 136, 174, 191) : Colors.transparent,
         ),
         child: Center(
           child: Text(

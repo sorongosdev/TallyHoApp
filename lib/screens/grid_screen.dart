@@ -58,7 +58,12 @@ class GridScreen extends StatelessWidget {
                       ),
                       width: gridWidth,
                       height: gridHeight,
-                      decoration: const BoxDecoration(color: Colors.white),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/board.png'), 
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: GridViewWidget(cellSize: cellSize),
                     ),
                   ),
@@ -88,7 +93,7 @@ class GridScreen extends StatelessWidget {
                           onPressed: () {},
                           child: const Text('뒤집기'),
                         ),
-                        const SizedBox(width: 8), // 버튼 사이 간격 추가
+                        const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: () {},
                           child: const Text('턴 넘기기'),

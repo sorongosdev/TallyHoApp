@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../bloc/grid_bloc.dart';
 import '../widgets/grid_view_widget.dart';
+import '../enum/game_modes.dart';
 
 class GridScreen extends StatelessWidget {
   const GridScreen({super.key});

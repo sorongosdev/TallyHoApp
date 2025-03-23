@@ -17,27 +17,38 @@ class GridItemWidget extends StatelessWidget {
       onTap: () {
         gridBloc.selectItem(index);
       },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/card_back.png'),
-            fit: BoxFit.cover,
-          ),
-          border: Border.all(color: Colors.black, width: 1.0),
-          color:
-              isSelected
-                  ? const Color.fromARGB(255, 136, 174, 191)
-                  : Colors.transparent,
-        ),
-        child: Center(
-          child: Text(
-            gridBloc.getItemText(index),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontSize: 18.0,
-              color: Colors.black,
+      child: Stack(
+        children: [
+          // 기본 카드 이미지
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/card_back.png'),
+                fit: BoxFit.cover,
+              ),
+              border: Border.all(color: Colors.black, width: 1.0),
             ),
           ),
-        ),
+          
+          // 선택 효과 레이어 (선택된 경우에만 보임)
+          if (isSelected)
+            Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(150, 136, 174, 191), // 투명도 추가
+              ),
+            ),
+          
+          // 텍스트 레이어
+          Center(
+            child: Text(
+              gridBloc.getItemText(index),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontSize: 18.0,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

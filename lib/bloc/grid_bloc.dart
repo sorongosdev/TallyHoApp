@@ -25,7 +25,7 @@ class GridBloc extends ChangeNotifier {
 
   // 현재 게임 모드를 저장하는 변수
   // ignore: prefer_final_fields
-  GameMode _currentMode = GameMode.hunt; // 기본 모드는 뒤집기로 설정
+  GameMode _currentMode = GameMode.flip; // 기본 모드는 뒤집기
   GameMode get currentMode => _currentMode;
 
   // 아이템 선택 메서드

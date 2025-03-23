@@ -1,7 +1,9 @@
 // widgets/grid_item_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 import '../bloc/grid_bloc.dart';
+import '../models/card_direction.dart';
 
 class GridItemWidget extends StatelessWidget {
   final int index;
@@ -12,7 +14,17 @@ class GridItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final gridBloc = Provider.of<GridBloc>(context);
     final isSelected = gridBloc.selectedIndex == index;
-    final isFlipped = gridBloc.isCardFlipped(index);
+    final cardData = gridBloc.getCardData(index);
+    
+    // 방향에 따른 회전 각도 설정
+    double rotationAngle = 0;
+    if (cardData.direction == CardDirection.right) {
+      rotationAngle = math.pi / 2; // 90도
+    } else if (cardData.direction == CardDirection.down) {
+      rotationAngle = math.pi; // 180도
+    } else if (cardData.direction == CardDirection.left) {
+      rotationAngle = 3 * math.pi / 2; // 270도
+    }
 
     return GestureDetector(
       onTap: () {
@@ -20,34 +32,25 @@ class GridItemWidget extends StatelessWidget {
       },
       child: Stack(
         children: [
-          // 카드 이미지
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(gridBloc.getCardImage(index)),
-                fit: BoxFit.cover,
+          // 카드 이미지 (카드 타입과 방향에 따라 회전)
+          Transform.rotate(
+            angle: rotationAngle,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(cardData.type.assetPath),
+                  fit: BoxFit.cover,
+                ),
+                border: Border.all(color: Colors.black, width: 1.0),
               ),
-              border: Border.all(color: Colors.black, width: 1.0),
             ),
           ),
           
-          // 선택 효과 레이어 (선택되었지만 아직 뒤집히지 않은 경우에만 보임)
-          if (isSelected && !isFlipped)
+          // 선택 효과 레이어 (선택된 경우에만 보임)
+          if (isSelected)
             Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(150, 136, 174, 191), // 투명도 추가
-              ),
-            ),
-          
-          // 텍스트 레이어 (카드가 뒤집히지 않았을 때만 보임)
-          if (!isFlipped)
-            Center(
-              child: Text(
-                gridBloc.getItemText(index),
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontSize: 18.0,
-                  color: Colors.black,
-                ),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(150, 136, 174, 191), // 투명도 추가
               ),
             ),
         ],

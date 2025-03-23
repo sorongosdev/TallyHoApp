@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import '../enum/game_modes.dart';
 import '../enum/player_types.dart';
-import '../enum/card_types.dart';
+import '../models/card_type.dart';
+import '../models/card_direction.dart';
+import '../models/card_data.dart';
 
 class GridBloc extends ChangeNotifier {
   // 원본 코드와 일치하도록 49개 고정 아이템
@@ -20,7 +22,7 @@ class GridBloc extends ChangeNotifier {
   int? _selectedIndex;
   int? get selectedIndex => _selectedIndex;
 
-  // 현재 게임 모드를 저장하는 변수
+  // 현재 게임 모드를 저장하는 변수 (하드코딩)
   // ignore: prefer_final_fields
   GameMode _currentMode = GameMode.flip; // 기본 모드는 뒤집기
   GameMode get currentMode => _currentMode;
@@ -29,58 +31,10 @@ class GridBloc extends ChangeNotifier {
   PlayerType _currentType = PlayerType.human; // 일단 사람으로 세팅
   PlayerType get currentType => _currentType;
 
-  // 각 카드의 타입을 저장하는 맵
-  final Map<int, CardType> _cardTypes = {};
-
-  // 카드가 뒤집혔는지 확인하는 변수
-  final Set<int> _flippedCards = {};
-
-  // 특정 카드가 뒤집혔는지 확인
-  bool isCardFlipped(int index) {
-    return _flippedCards.contains(index);
-  }
-
-  // 카드 이미지를 가져오는 메서드
-  String getCardImage(int index) {
-    // 뒤집힌 카드가 아니면 뒷면 이미지 반환
-    if (!isCardFlipped(index)) {
-      return 'assets/images/card_back.png';
-    }
-
-    // 뒤집힌 카드면 해당 카드 타입에 맞는 이미지 반환
-    switch (_cardTypes[index] ?? CardType.hidden) {
-      case CardType.hunter:
-        return 'assets/images/hunter.png';
-      case CardType.bear:
-        return 'assets/images/bear.png';
-      case CardType.duck:
-        return 'assets/images/duck.png';
-      case CardType.fox:
-        return 'assets/images/fox.png';
-      case CardType.goose:
-        return 'assets/images/goose.png';
-      case CardType.woodcutter:
-        return 'assets/images/woodcutter.png';
-      case CardType.fatTree:
-        return 'assets/images/fat_tree.png';
-      case CardType.skinnyTree:
-        return 'assets/images/skinny_tree.png';
-      case CardType.hidden:
-      default:
-        return 'assets/images/card_back.png';
-    }
-  }
-
-  // 카드 뒤집기 메서드
-  void flipCard() {
-    if (_selectedIndex != null) {
-      final index = _selectedIndex!;
-      _flippedCards.add(index);
-      _cardTypes[index] = CardType.hunter; // 현재는 hunter로 고정
-      notifyListeners();
-    }
-  }
-
+  // 각 그리드 아이템의 카드 데이터를 저장하는 리스트
+  // ignore: prefer_final_fields
+  List<CardData> _cardDataList = List.generate(49, (_) => CardData.hidden());
+  
   // 아이템 선택 메서드
   void selectItem(int index) {
     if (_selectedIndex == index) {
@@ -97,5 +51,35 @@ class GridBloc extends ChangeNotifier {
     final row = (index ~/ _columns);
     final column = (index % _columns);
     return 'R${row}C$column';
+  }
+  
+  // 특정 인덱스의 카드 데이터 반환
+  CardData getCardData(int index) {
+    if (index < 0 || index >= _itemCount) {
+      return CardData.hidden();
+    }
+    return _cardDataList[index];
+  }
+
+  // 카드 뒤집기 동작
+  void flipCard(int index) {
+    if (index < 0 || index >= _itemCount) return;
+    if (_currentMode != GameMode.flip) return;
+    if (_selectedIndex != index) return; // 선택된 카드만 뒤집을 수 있음
+    
+    final currentData = _cardDataList[index];
+    if (currentData.type == CardType.hidden) {
+
+      CardType cardType = CardType.bear; // 기본 카드 타입
+      CardDirection direction = CardDirection.up; // 기본 방향
+      
+      _cardDataList[index] = CardData(
+        type: cardType,
+        direction: direction,
+        isFlipped: true
+      );
+    }
+    
+    notifyListeners();
   }
 }

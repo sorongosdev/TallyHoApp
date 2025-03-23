@@ -31,7 +31,6 @@ class GridScreen extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +72,9 @@ class GridScreen extends StatelessWidget {
                       height: gridHeight,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(gridBloc.getCardImage(gridBloc.selectedIndex ?? - 1)),
+                          image: AssetImage(
+                            gridBloc.getCardImage(gridBloc.selectedIndex ?? -1),
+                          ),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -129,7 +130,17 @@ class GridScreen extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            gridBloc.flipCard();
+                            if (gridBloc.selectedIndex != null) {
+                              gridBloc.flipCard();
+                            } else {
+                              // 선택된 카드가 없으면 메시지 출력
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('카드를 선택해주세요.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
                           },
                           child: const Text('뒤집기'),
                         ),

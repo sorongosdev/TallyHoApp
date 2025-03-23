@@ -29,17 +29,26 @@ class GridBloc extends ChangeNotifier {
   PlayerType _currentType = PlayerType.human; // 일단 사람으로 세팅
   PlayerType get currentType => _currentType;
 
-  // ignore: prefer_final_fields
-  CardType _currentCardType = CardType.hidden;
-  CardType get currentCardType => _currentCardType;
+  // 각 카드의 타입을 저장하는 맵
+  final Map<int, CardType> _cardTypes = {};
 
+  // 카드가 뒤집혔는지 확인하는 변수
+  final Set<int> _flippedCards = {};
+
+  // 특정 카드가 뒤집혔는지 확인
+  bool isCardFlipped(int index) {
+    return _flippedCards.contains(index);
+  }
+
+  // 카드 이미지를 가져오는 메서드
   String getCardImage(int index) {
-    if (_selectedIndex != index) {
+    // 뒤집힌 카드가 아니면 뒷면 이미지 반환
+    if (!isCardFlipped(index)) {
       return 'assets/images/card_back.png';
     }
 
-    // 선택된 카드면 현재 카드 타입에 따라 이미지 반환
-    switch (_currentCardType) {
+    // 뒤집힌 카드면 해당 카드 타입에 맞는 이미지 반환
+    switch (_cardTypes[index] ?? CardType.hidden) {
       case CardType.hunter:
         return 'assets/images/hunter.png';
       case CardType.bear:
@@ -57,13 +66,17 @@ class GridBloc extends ChangeNotifier {
       case CardType.skinnyTree:
         return 'assets/images/skinny_tree.png';
       case CardType.hidden:
+      default:
         return 'assets/images/card_back.png';
     }
   }
 
+  // 카드 뒤집기 메서드
   void flipCard() {
     if (_selectedIndex != null) {
-      _currentCardType = CardType.hunter; // 또는 원하는 다른 타입
+      final index = _selectedIndex!;
+      _flippedCards.add(index);
+      _cardTypes[index] = CardType.hunter; // 현재는 hunter로 고정
       notifyListeners();
     }
   }

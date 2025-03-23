@@ -1,11 +1,6 @@
 // bloc/grid_bloc.dart
 import 'package:flutter/material.dart';
-
-enum GameMode {
-  flip,
-  hunt,
-  escape,
-}
+import '../enum/game_modes.dart';
 
 class GridBloc extends ChangeNotifier {
   // 원본 코드와 일치하도록 49개 고정 아이템

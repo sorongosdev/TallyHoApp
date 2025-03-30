@@ -58,7 +58,14 @@ class GridBloc extends ChangeNotifier {
         _selectedIndices.removeAt(0);
       }
       _selectedIndices.add(index);
+
+      if(_selectedIndices.length == 1){
+        _fromIndex = index;
+      } else if(_selectedIndices.length == 2){
+        _toIndex = index;
+      }
     }
+
     notifyListeners();
   }
 
@@ -122,6 +129,8 @@ class GridBloc extends ChangeNotifier {
     // 카드 이동 로직
     _cardDataList[toIndex] = fromData;
     _cardDataList[fromIndex] = toData;
+
+    print('Card moved from $fromIndex to $toIndex');
 
     notifyListeners();
   }

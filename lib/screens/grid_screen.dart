@@ -171,7 +171,9 @@ class GridScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            
+                            int fromIndex = gridBloc.selectedIndices.first;
+                            int toIndex = gridBloc.selectedIndices.last;
+                            gridBloc.moveCard(fromIndex, toIndex);
                           },
                           child: const Text('이동하기'),
                         ),

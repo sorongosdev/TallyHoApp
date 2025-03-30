@@ -1,6 +1,7 @@
 // screens/grid_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tally_ho/enum/turn_types.dart';
 import '../bloc/grid_bloc.dart';
 import '../widgets/grid_view_widget.dart';
 import '../enum/game_modes.dart';
@@ -8,6 +9,15 @@ import '../enum/player_types.dart';
 
 class GridScreen extends StatelessWidget {
   const GridScreen({super.key});
+
+    String _getTurnDisplayName(TurnTypes turn) {
+    switch (turn) {
+      case TurnTypes.opponent:
+        return '상대';
+      case TurnTypes.me:
+        return '나';
+    }
+  }
 
   // 모드 이름 반환
   String _getModeDisplayName(GameMode mode) {
@@ -82,6 +92,24 @@ class GridScreen extends StatelessWidget {
                   Column(
                     children: [
                       SizedBox(height: 50),
+
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            color: Colors.yellow,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${_getTurnDisplayName(gridBloc.currentTurn)}의 차례입니다',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
 
                       Row(
                         mainAxisAlignment:

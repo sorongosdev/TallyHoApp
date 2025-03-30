@@ -5,17 +5,17 @@ import '../enum/player_types.dart';
 import '../models/card_type.dart';
 import '../models/card_direction.dart';
 import '../models/card_data.dart';
+import '../consts/game_consts.dart';
 
 class GridBloc extends ChangeNotifier {
-  // 원본 코드와 일치하도록 49개 고정 아이템
-  final int _itemCount = 49;
+  final int _itemCount = GameConsts.gridItemCount;
   int get itemCount => _itemCount;
 
   // 그리드 행/열 수를 7로 고정
-  final int _rows = 7;
+  final int _rows = GameConsts.gridRows;
   int get rows => _rows;
 
-  final int _columns = 7;
+  final int _columns = GameConsts.gridColumns;
   int get columns => _columns;
 
   // 선택된 아이템 인덱스

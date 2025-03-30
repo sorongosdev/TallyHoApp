@@ -10,7 +10,7 @@ import '../enum/player_types.dart';
 class GridScreen extends StatelessWidget {
   const GridScreen({super.key});
 
-    String _getTurnDisplayName(TurnTypes turn) {
+  String _getTurnDisplayName(TurnTypes turn) {
     switch (turn) {
       case TurnTypes.opponent:
         return '상대';
@@ -94,8 +94,7 @@ class GridScreen extends StatelessWidget {
                       SizedBox(height: 50),
 
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
                             color: Colors.yellow,
@@ -169,6 +168,12 @@ class GridScreen extends StatelessWidget {
                             }
                           },
                           child: const Text('뒤집기'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            
+                          },
+                          child: const Text('이동하기'),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(

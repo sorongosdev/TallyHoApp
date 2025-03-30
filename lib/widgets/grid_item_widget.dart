@@ -16,7 +16,7 @@ class GridItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gridBloc = Provider.of<GridBloc>(context);
-    final isSelected = gridBloc.selectedIndex == index;
+    final isSelected = gridBloc.selectedIndices.contains(index);
     final cardData = gridBloc.getCardData(index);
     
     // 방향에 따른 회전 각도 설정

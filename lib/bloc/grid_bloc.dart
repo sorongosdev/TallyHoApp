@@ -1,5 +1,7 @@
 // bloc/grid_bloc.dart
 import 'package:flutter/material.dart';
+import 'package:tally_ho/enum/turn_types.dart';
+import 'package:tally_ho/services/game_state.dart';
 import '../enum/game_modes.dart';
 import '../enum/player_types.dart';
 import '../models/card_type.dart';
@@ -22,14 +24,14 @@ class GridBloc extends ChangeNotifier {
   int? _selectedIndex;
   int? get selectedIndex => _selectedIndex;
 
-  // 현재 게임 모드를 저장하는 변수 (하드코딩)
-  // ignore: prefer_final_fields
-  GameMode _currentMode = GameMode.flip; // 기본 모드는 뒤집기
-  GameMode get currentMode => _currentMode;
+  final GameState _gameState = GameState();
 
   // ignore: prefer_final_fields
-  PlayerType _currentType = PlayerType.human; // 일단 사람으로 세팅
-  PlayerType get currentType => _currentType;
+  GameMode get currentMode => _gameState.currentMode; // 기본 모드는 뒤집기
+  
+  PlayerType get currentType => _gameState.currentType; // 기본 플레이어 타입은 인간
+
+  TurnTypes get currentTurn => _gameState.currentTurn; // 기본 턴은 나
 
   // 각 그리드 아이템의 카드 데이터를 저장하는 리스트
   // ignore: prefer_final_fields
@@ -64,14 +66,14 @@ class GridBloc extends ChangeNotifier {
   // 카드 뒤집기 동작
   void flipCard(int index) {
     if (index < 0 || index >= _itemCount) return;
-    if (_currentMode != GameMode.flip) return;
+    if (currentMode != GameMode.flip) return;
     if (_selectedIndex != index) return; // 선택된 카드만 뒤집을 수 있음
     
     final currentData = _cardDataList[index];
     if (currentData.type == CardType.hidden) {
 
       CardType cardType = CardType.bear; // 기본 카드 타입
-      CardDirection direction = CardDirection.up; // 기본 방향
+      CardDirection direction = CardDirection.right; // 기본 방향
       
       _cardDataList[index] = CardData(
         type: cardType,

@@ -155,8 +155,8 @@ class GridScreen extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            if (gridBloc.selectedIndex != null) {
-                              gridBloc.flipCard(gridBloc.selectedIndex!);
+                            if (gridBloc.selectedIndices.isNotEmpty) {
+                              gridBloc.flipCard(gridBloc.selectedIndices.first);
                             } else {
                               // 선택된 카드가 없으면 메시지 출력
                               ScaffoldMessenger.of(context).showSnackBar(

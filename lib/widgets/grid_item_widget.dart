@@ -18,11 +18,11 @@ class GridItemWidget extends StatelessWidget {
     
     // 방향에 따른 회전 각도 설정
     double rotationAngle = 0;
-    if (cardData.direction == CardDirection.right) {
+    if (cardData.direction == CardDirection.down) {
       rotationAngle = math.pi / 2; // 90도
-    } else if (cardData.direction == CardDirection.down) {
-      rotationAngle = math.pi; // 180도
     } else if (cardData.direction == CardDirection.left) {
+      rotationAngle = math.pi; // 180도
+    } else if (cardData.direction == CardDirection.up) {
       rotationAngle = 3 * math.pi / 2; // 270도
     }
 

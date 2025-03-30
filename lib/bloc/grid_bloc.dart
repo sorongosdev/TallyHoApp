@@ -1,4 +1,5 @@
 // bloc/grid_bloc.dart
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tally_ho/enum/turn_types.dart';
 import 'package:tally_ho/services/game_state.dart';
@@ -28,15 +29,20 @@ class GridBloc extends ChangeNotifier {
 
   // ignore: prefer_final_fields
   GameMode get currentMode => _gameState.currentMode; // 기본 모드는 뒤집기
-  
+
   PlayerType get currentType => _gameState.currentType; // 기본 플레이어 타입은 인간
 
   TurnTypes get currentTurn => _gameState.currentTurn; // 기본 턴은 나
 
+  CardType get currentCardType => _gameState.currentCardType; // 기본 카드 타입은 숨김
+
+  CardDirection get currentCardDirection =>
+      _gameState.currentCardDirection; // 기본 카드 방향은 위쪽
+
   // 각 그리드 아이템의 카드 데이터를 저장하는 리스트
   // ignore: prefer_final_fields
   List<CardData> _cardDataList = List.generate(49, (_) => CardData.hidden());
-  
+
   // 아이템 선택 메서드
   void selectItem(int index) {
     if (_selectedIndex == index) {
@@ -54,7 +60,7 @@ class GridBloc extends ChangeNotifier {
     final column = (index % _columns);
     return 'R${row}C$column';
   }
-  
+
   // 특정 인덱스의 카드 데이터 반환
   CardData getCardData(int index) {
     if (index < 0 || index >= _itemCount) {
@@ -63,25 +69,48 @@ class GridBloc extends ChangeNotifier {
     return _cardDataList[index];
   }
 
+  void changeCardType(CardType type) {
+    _gameState.currentCardType = type;
+    notifyListeners();
+  }
+
+  void changeCardDirection(CardDirection direction) {
+    _gameState.currentCardDirection = direction;
+    notifyListeners();
+  }
+
   // 카드 뒤집기 동작
   void flipCard(int index) {
     if (index < 0 || index >= _itemCount) return;
     if (currentMode != GameMode.flip) return;
     if (_selectedIndex != index) return; // 선택된 카드만 뒤집을 수 있음
-    
+
     final currentData = _cardDataList[index];
     if (currentData.type == CardType.hidden) {
-
-      CardType cardType = CardType.bear; // 기본 카드 타입
-      CardDirection direction = CardDirection.right; // 기본 방향
-      
+      changeCardType(CardType.bear);
+      changeCardDirection(CardDirection.right);
       _cardDataList[index] = CardData(
-        type: cardType,
-        direction: direction,
-        isFlipped: true
+        type: currentCardType,
+        direction: currentCardDirection,
+        isFlipped: true,
       );
     }
-    
+
+    notifyListeners();
+  }
+
+  void moveCard(int fromIndex, int toIndex) {
+    if (fromIndex < 0 || fromIndex >= _itemCount) return;
+    if (toIndex < 0 || toIndex >= _itemCount) return;
+    if (fromIndex == toIndex) return; // 같은 인덱스는 이동하지 않음
+
+    final fromData = _cardDataList[fromIndex];
+    final toData = _cardDataList[toIndex];
+
+    // 카드 이동 로직
+    _cardDataList[toIndex] = fromData;
+    _cardDataList[fromIndex] = toData;
+
     notifyListeners();
   }
 }

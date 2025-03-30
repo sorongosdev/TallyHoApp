@@ -1,0 +1,4 @@
+enum TurnTypes {
+  opponent,
+  me
+}

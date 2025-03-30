@@ -1,9 +1,12 @@
 // widgets/grid_item_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tally_ho/enum/game_modes.dart';
+import 'package:tally_ho/services/game_state.dart';
 import 'dart:math' as math;
 import '../bloc/grid_bloc.dart';
 import '../models/card_direction.dart';
+import '../enum/turn_types.dart';
 
 class GridItemWidget extends StatelessWidget {
   final int index;
@@ -47,7 +50,7 @@ class GridItemWidget extends StatelessWidget {
           ),
           
           // 선택 효과 레이어 (선택된 경우에만 보임)
-          if (isSelected)
+          if (isSelected && gridBloc.currentTurn == TurnTypes.me)
             Container(
               decoration: const BoxDecoration(
                 color: Color.fromARGB(150, 136, 174, 191), // 투명도 추가

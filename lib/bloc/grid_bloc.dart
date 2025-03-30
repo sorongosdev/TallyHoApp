@@ -21,9 +21,13 @@ class GridBloc extends ChangeNotifier {
   final int _columns = GridConsts.gridColumns;
   int get columns => _columns;
 
-  // 선택된 아이템 인덱스
-  int? _selectedIndex;
-  int? get selectedIndex => _selectedIndex;
+  List<int> _selectedIndices = [];
+  List<int> get selectedIndices => _selectedIndices;
+
+  int? _fromIndex;
+  int? get fromIndex => _fromIndex;
+  int? _toIndex;
+  int? get toIndex => _toIndex;
 
   final GameState _gameState = GameState();
 
@@ -45,11 +49,15 @@ class GridBloc extends ChangeNotifier {
 
   // 아이템 선택 메서드
   void selectItem(int index) {
-    if (_selectedIndex == index) {
-      // 이미 선택된 아이템을 다시 탭하면 선택 해제
-      _selectedIndex = null;
+    // 이미 선택된 아이템을 다시 탭하면 선택 해제
+    if (_selectedIndices.contains(index)) {
+      _selectedIndices.remove(index);
     } else {
-      _selectedIndex = index;
+      // 선택된 카드가 2개 이상일 경우, 가장 오래된 카드부터 선택 해제
+      if (_selectedIndices.length >= 2) {
+        _selectedIndices.removeAt(0);
+      }
+      _selectedIndices.add(index);
     }
     notifyListeners();
   }
@@ -79,11 +87,15 @@ class GridBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isSelected(int index){
+    return _selectedIndices.contains(index);
+  }
+
   // 카드 뒤집기 동작
   void flipCard(int index) {
     if (index < 0 || index >= _itemCount) return;
     if (currentMode != GameMode.flip) return;
-    if (_selectedIndex != index) return; // 선택된 카드만 뒤집을 수 있음
+    if (!isSelected(index)) return; // 선택된 카드만 뒤집을 수 있음
 
     final currentData = _cardDataList[index];
     if (currentData.type == CardType.hidden) {

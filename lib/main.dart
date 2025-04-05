@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'bloc/grid_bloc.dart';
 import 'screens/grid_screen.dart';
+import 'services/game_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +23,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => GridBloc()),
+        // 먼저 GameState 제공 (싱글톤 대신 Provider로 관리)
+        ChangeNotifierProvider(create: (_) => GameState()),
+        
+        // GameState를 사용하는 GridBloc 제공
+        ChangeNotifierProxyProvider<GameState, GridBloc>(
+          create: (context) => GridBloc(context.read<GameState>()),
+          update: (context, gameState, previousGridBloc) => 
+            previousGridBloc ?? GridBloc(gameState),
+        ),
       ],
       child: MaterialApp(
-        title: 'Grid App',
+        title: 'Tally-Ho',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
